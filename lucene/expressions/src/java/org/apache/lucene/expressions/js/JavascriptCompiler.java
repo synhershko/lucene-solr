@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -565,10 +566,15 @@ public class JavascriptCompiler {
         checkFunction(method, JavascriptCompiler.class.getClassLoader());
         map.put(call, method);
       }
+      map.put("now", JavascriptCompiler.class.getMethod("getNow"));
     } catch (ReflectiveOperationException | IOException e) {
       throw new Error("Cannot resolve function", e);
     }
     DEFAULT_FUNCTIONS = Collections.unmodifiableMap(map);
+  }
+
+  private static long getNow(){
+    return new Date().getTime();
   }
   
   private static void checkFunction(Method method, ClassLoader parent) {
